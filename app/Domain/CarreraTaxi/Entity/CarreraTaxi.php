@@ -46,6 +46,7 @@ class CarreraTaxi
   private CarreraTaxiCantidadPasajeros $cantidadPasajeros;
   private CarreraTaxiPrecio $precio;
   private CarreraTaxiDuracionMinutos $duracionMinutos;
+  private DateTime $fechaCreacion;
 
   
   /**
@@ -75,6 +76,7 @@ class CarreraTaxi
       $this->cantidadPasajeros = $cantidadPasajeros;
       $this->precio = $precio;
       $this->duracionMinutos = $duracionMinutos;
+      $this->fechaCreacion = new DateTime();
 
       /**
         *  Publicar el evento de creación de la carrera
@@ -91,7 +93,7 @@ class CarreraTaxi
         $this->barrioInicio,
         $this->barrioLlegada,
         $this->cantidadPasajeros,
-        new DateTime()
+        $this->fechaCreacion
       ));
   }
 
@@ -143,6 +145,15 @@ class CarreraTaxi
   public function getDuracionMinutos(): CarreraTaxiDuracionMinutos
   {
     return $this->duracionMinutos;
+  }
+
+  /**
+   * Obtiene la fecha de creación de la carrera
+   * @return DateTime
+   */
+  public function getFechaCreacion(): DateTime
+  {
+    return $this->fechaCreacion;
   }
 
   /**
