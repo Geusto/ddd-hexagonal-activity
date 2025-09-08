@@ -16,9 +16,10 @@ use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
 
 interface CarreraTaxiRepositoryPort
 {
+  public function nextId(): CarreraTaxiId;
   public function create(CarreraTaxi $carreraTaxi): void;
   public function update(CarreraTaxi $carreraTaxi): void;
   public function delete(CarreraTaxi $carreraTaxi): void;
-  public function findById(CarreraTaxiId $id): CarreraTaxi;
+  public function findById(CarreraTaxiId $id): ?CarreraTaxi;
   public function findAll(?ListCarreraTaxiQuery $query=null): array;
 }
