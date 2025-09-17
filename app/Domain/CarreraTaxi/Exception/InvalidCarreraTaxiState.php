@@ -14,7 +14,7 @@ use Exception;
  * extender de esta clase para mantener la consistencia y permitir
  * el manejo centralizado de errores del dominio.
  */
-class CarreraTaxiDomainException extends Exception
+class InvalidCarreraTaxiState extends Exception
 {
     /**
      * Código de error por defecto para excepciones del dominio
