@@ -11,11 +11,11 @@ class UpdateCarreraTaxiCommand
     public readonly string $cliente,
     public readonly string $taxi,
     public readonly string $taxista,
-    public readonly float $kilometros,
+    public readonly int $kilometros,
     public readonly string $barrioInicio,
     public readonly string $barrioLlegada,
     public readonly int $cantidadPasajeros,
-    public readonly float $precio,
+    public readonly int $precio,
     public readonly int $duracionMinutos,
   ) {}
 

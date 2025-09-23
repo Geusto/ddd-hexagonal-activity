@@ -6,15 +6,15 @@ use InvalidArgumentException;
 
 class CarreraTaxiPrecio
 {
-    private float $value;
+    private int $value;
 
     /**
      * Constructor del Value Object
-     * @param float $value - El precio de la carrera
+     * @param int $value - El precio de la carrera
      * @throws InvalidArgumentException - Arroja una excepcion si el precio no es un numero entero
      */
 
-    public function __construct(float $value)
+    public function __construct(int $value)
     {
         $this->validate($value);
         $this->value = $value;
@@ -22,11 +22,11 @@ class CarreraTaxiPrecio
 
     /**
      * Valida el precio de la carrera
-     * @param float $value - El precio de la carrera
+     * @param int $value - El precio de la carrera
      * @throws InvalidArgumentException - Arroja una excepcion si el precio no es un numero entero
      */
 
-    private function validate(float $value): void
+    private function validate(int $value): void
     {
         if ($value <= 0) {
             throw new InvalidArgumentException('El precio de la carrera no puede ser 0 o negativo');
@@ -43,9 +43,9 @@ class CarreraTaxiPrecio
 
     /**
      * Obtiene el precio de la carrera
-     * @return float - El precio de la carrera
+     * @return int - El precio de la carrera
      */
-    public function getValue(): float
+    public function getValue(): int
     {
         return $this->value;
     }
@@ -58,7 +58,7 @@ class CarreraTaxiPrecio
     public function equals(CarreraTaxiPrecio $other): bool
     {
         // Tolerancia de 0.01 para comparaciones de precios
-        return abs($this->value - $other->getValue()) < 0.01;
+        return $this->value === $other->getValue();
     }   
 
     /**
