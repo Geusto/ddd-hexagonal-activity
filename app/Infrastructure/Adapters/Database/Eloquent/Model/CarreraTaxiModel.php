@@ -29,30 +29,30 @@ use DateTime;
 class CarreraTaxiModel extends Model
 {
     protected $table = 'carrera_taxi';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
-      'id',
       'cliente',
       'taxi',
       'taxista',
       'kilometros',
-      'barrio_inicio',        
-      'barrio_llegada',       
-      'cantidad_pasajeros',   
+      'barrioInicio',
+      'barrioLlegada',
+      'cantidadPasajeros',
       'precio',
-      'duracion_minutos',     
-      'fecha_creacion'        
+      'duracionMinutos'
     ];
 
     protected $casts = [
-      'fecha_creacion' => 'datetime',        // String → DateTime
-      'kilometros' => 'integer',            // String → int
-      'precio' => 'integer',                // String → int  
-      'duracion_minutos' => 'integer',      // String → int
-      'cantidad_pasajeros' => 'integer'     // String → int
+      'kilometros' => 'integer',
+      'precio' => 'integer',
+      'duracionMinutos' => 'integer',
+      'cantidadPasajeros' => 'integer'
     ];
 
-    public $timestamps = false; // Usamos fecha_creacion personalizada
+    public $timestamps = true; // usamos created_at/updated_at por defecto
 
     /**
      * Convertir el modelo a la entidad del dominio
@@ -62,17 +62,17 @@ class CarreraTaxiModel extends Model
     public function toDomainEntity(): CarreraTaxi
     {
       return new CarreraTaxi(
-          new CarreraTaxiId($this->id),
-          new CarreraTaxiCliente($this->cliente),
-          new CarreraTaxiTaxi($this->taxi),
-          new CarreraTaxiTaxista($this->taxista),
-          new CarreraTaxiKilometros($this->kilometros),
-          new CarreraTaxiBarrioInicio($this->barrio_inicio),
-          new CarreraTaxiBarrioLlegada($this->barrio_llegada),
-          new CarreraTaxiCantidadPasajeros($this->cantidad_pasajeros),
-          new CarreraTaxiPrecio($this->precio),
-          new CarreraTaxiDuracionMinutos($this->duracion_minutos)
-      );
+        new CarreraTaxiId($this->id),
+        new CarreraTaxiCliente($this->cliente),
+        new CarreraTaxiTaxi($this->taxi),
+        new CarreraTaxiTaxista($this->taxista),
+        new CarreraTaxiKilometros($this->kilometros),
+        new CarreraTaxiBarrioInicio($this->barrioInicio),
+        new CarreraTaxiBarrioLlegada($this->barrioLlegada),
+        new CarreraTaxiCantidadPasajeros($this->cantidadPasajeros),
+        new CarreraTaxiPrecio($this->precio),
+        new CarreraTaxiDuracionMinutos($this->duracionMinutos)
+    );
     }
 
     /**
@@ -88,12 +88,11 @@ class CarreraTaxiModel extends Model
       $model->taxi = $carreraTaxi->getTaxi()->getValue();
       $model->taxista = $carreraTaxi->getTaxista()->getValue();
       $model->kilometros = $carreraTaxi->getKilometros()->getValue();
-      $model->barrio_inicio = $carreraTaxi->getBarrioInicio()->getValue();
-      $model->barrio_llegada = $carreraTaxi->getBarrioLlegada()->getValue();
-      $model->cantidad_pasajeros = $carreraTaxi->getCantidadPasajeros()->getValue();
+      $model->barrioInicio = $carreraTaxi->getBarrioInicio()->getValue();
+      $model->barrioLlegada = $carreraTaxi->getBarrioLlegada()->getValue();
+      $model->cantidadPasajeros = $carreraTaxi->getCantidadPasajeros()->getValue();
       $model->precio = $carreraTaxi->getPrecio()->getValue();
-      $model->duracion_minutos = $carreraTaxi->getDuracionMinutos()->getValue();
-      $model->fecha_creacion = $carreraTaxi->getFechaCreacion();
+      $model->duracionMinutos = $carreraTaxi->getDuracionMinutos()->getValue();
       
       return $model;
     }
