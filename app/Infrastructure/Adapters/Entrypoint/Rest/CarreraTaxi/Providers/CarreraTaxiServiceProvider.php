@@ -7,6 +7,10 @@ use App\Application\CarreraTaxi\Port\Out\CarreraTaxiRepositoryPort;
 use App\Infrastructure\Adapters\Database\Eloquent\Repository\EloquentCarreraTaxiRepositoryAdapter;
 use App\Application\CarreraTaxi\Port\In\CreateCarreraTaxiUseCase;
 use App\Application\CarreraTaxi\Service\CreateCarreraTaxiService;
+use App\Application\CarreraTaxi\Port\In\UpdateCarreraTaxiUseCase;
+use App\Application\CarreraTaxi\Service\UpdateCarreraTaxiService;
+use App\Application\CarreraTaxi\Port\In\DeleteCarreraTaxiUseCase;
+use App\Application\CarreraTaxi\Service\DeleteCarreraTaxiService;
 
 
 /**
@@ -29,6 +33,18 @@ class CarreraTaxiServiceProvider extends ServiceProvider
     $this->app->bind(
       CreateCarreraTaxiUseCase::class,
       CreateCarreraTaxiService::class
+    );
+
+    // Caso de uso actualizar
+    $this->app->bind(
+      UpdateCarreraTaxiUseCase::class,
+      UpdateCarreraTaxiService::class
+    );
+
+    // Caso de uso eliminar
+    $this->app->bind(
+      DeleteCarreraTaxiUseCase::class,
+      DeleteCarreraTaxiService::class
     );
   }
 

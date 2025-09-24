@@ -3,11 +3,16 @@
 namespace App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Controller;
 
 use App\Application\CarreraTaxi\Port\In\CreateCarreraTaxiUseCase;
-use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
+use App\Application\CarreraTaxi\Port\In\UpdateCarreraTaxiUseCase;
+use App\Application\CarreraTaxi\Port\In\DeleteCarreraTaxiUseCase;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Request\CarreraTaxiHttpRequest;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Response\CarreraTaxiHttpResponse;
+use App\Application\CarreraTaxi\Port\Out\CarreraTaxiRepositoryPort;
+use App\Application\CarreraTaxi\Mapper\CarreraTaxiMapper;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
 use Illuminate\Http\JsonResponse;
+
 
 
 /**
@@ -19,7 +24,11 @@ use Illuminate\Http\JsonResponse;
 class CarreraTaxiController
 {
   public function __construct(
-    private readonly CreateCarreraTaxiUseCase $createUseCase
+    private readonly CreateCarreraTaxiUseCase $createUseCase,
+    private readonly CarreraTaxiRepositoryPort $repository,
+    private readonly CarreraTaxiMapper $appMapper,
+    private readonly UpdateCarreraTaxiUseCase $updateUseCase,
+    private readonly DeleteCarreraTaxiUseCase $deleteUseCase
   ) {}
 
   public function store(CarreraTaxiHttpRequest $request)
@@ -36,7 +45,7 @@ class CarreraTaxiController
   {
     $items = $this->repository->findAll(); 
     $data = array_map(fn ($c) => CarreraTaxiHttpMapper::toJson($this->appMapper->toResponse($c)), $items);
-  
+
     return response()->json([
       'ok' => true,
       'data' => $data,
@@ -52,8 +61,8 @@ class CarreraTaxiController
 
     $dto = $this->appMapper->toResponse($carrera);
     return response()->json([
-      'ok' => true,
-      'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($dto),
+        'ok' => true,
+        'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($dto),
     ]);
   }
 
@@ -72,9 +81,39 @@ class CarreraTaxiController
     ]);
   }
 
+  public function update(int $id, CarreraTaxiHttpRequest $request)
+  {
+    $existing = $this->repository->findById(new CarreraTaxiId($id));
+    if (!$existing) {
+      return response()->json(['ok' => false, 'message' => 'No encontrada'], 404);
+    }
+
+    $command = \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toCreateCommand($request->validated());
+
+    $response = $this->updateUseCase->execute(
+      new \App\Application\CarreraTaxi\Dto\Command\UpdateCarreraTaxiCommand(
+          id: $id,
+          cliente: $command->cliente,
+          taxi: $command->taxi,
+          taxista: $command->taxista,
+          kilometros: $command->kilometros,
+          barrioInicio: $command->barrioInicio,
+          barrioLlegada: $command->barrioLlegada,
+          cantidadPasajeros: $command->cantidadPasajeros,
+          precio: $command->precio,
+          duracionMinutos: $command->duracionMinutos
+      )
+    );
+
+    return response()->json([
+      'ok' => true,
+      'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($response),
+    ]);
+  }
+
 
 }
 
 /**
-* Nota: mas adelante creare mas controladores para las carreras de taxi.
+ * Nota: mas adelante creare mas controladores para las carreras de taxi.
 */
