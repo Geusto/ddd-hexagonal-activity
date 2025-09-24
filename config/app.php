@@ -181,6 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Providers\CarreraTaxiServiceProvider::class,
 
         /*
          * Package Service Providers...
