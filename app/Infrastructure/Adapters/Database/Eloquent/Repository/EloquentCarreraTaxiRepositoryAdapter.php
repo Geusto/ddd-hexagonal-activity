@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Infrastructure\Adapters\Database\Eloquent\Repository;
+
+use App\Application\CarreraTaxi\Port\Out\CarreraTaxiRepositoryPort;
+use App\Domain\CarreraTaxi\Entity\CarreraTaxi;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
+use App\Infrastructure\Adapters\Database\Eloquent\Model\CarreraTaxiModel;
+use App\Application\CarreraTaxi\Dto\Query\ListCarreraTaxiQuery;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+
+
+/**
+ * Adaptador del repositorio usando Eloquent
+ * 
+ * Este adaptador implementa el puerto CarreraTaxiRepositoryPort
+ * usando Eloquent ORM para interactuar con la base de datos.
+ * 
+ * Es la implementación concreta que conecta la aplicación con la persistencia.
+ */
+class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
+{
+    /**
+     * Genera un nuevo ID para la carrera
+     * @return CarreraTaxiId
+     */
+    public function nextId(): CarreraTaxiId
+    {
+        // Obtener el próximo valor de AUTOINCREMENT desde la base de datos
+        // Nota: SHOW TABLE STATUS funciona en MySQL/MariaDB
+        $status = DB::select("SHOW TABLE STATUS LIKE 'carrera_taxi'");
+        $next = isset($status[0]) && isset($status[0]->Auto_increment)
+            ? (int) $status[0]->Auto_increment
+            : ((int) CarreraTaxiModel::max('id') + 1);
+
+        return new CarreraTaxiId($next);
+    }
+
+    /**
+     * Guarda una nueva carrera en la base de datos
+     * @param CarreraTaxi $carreraTaxi
+     */
+    public function create(CarreraTaxi $carreraTaxi): void
+    {
+      $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
+      $model->save();
+    }
+
+    /**
+     * Actualiza una carrera existente
+     * @param CarreraTaxi $carreraTaxi
+     */
+    public function update(CarreraTaxi $carreraTaxi): void
+    {
+      $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
+      $model->update();
+  }
+
+    /**
+     * Elimina una carrera de la base de datos
+     * @param CarreraTaxi $carreraTaxi
+     */
+    public function delete(CarreraTaxi $carreraTaxi): void
+    {
+      $model = CarreraTaxiModel::where('id', $carreraTaxi->getId()->getValue())->first();
+      if ($model) {
+        $model->delete();
+      }
+  }
+
+    /**
+     * Busca una carrera por su ID
+     * @param CarreraTaxiId $id
+     * @return CarreraTaxi|null
+     */
+    public function findById(CarreraTaxiId $id): ?CarreraTaxi
+    {
+      $model = CarreraTaxiModel::find($id->getValue());
+        
+      if (!$model) {
+        return null;
+      }
+
+      return $model->toDomainEntity();
+    }
+}
