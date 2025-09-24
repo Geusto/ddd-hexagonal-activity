@@ -10,7 +10,7 @@ use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Response\CarreraTaxiHttpRespo
 
 /**
  * Controlador para las carreras de taxi
- * 
+ * recibe el request, usa el mapper, ejecuta el caso de uso y retorna la respuesta HTTP.
  * Nota: esta clase es el que se encarga de manejar las peticiones HTTP para las carreras de taxi.
  */
 
@@ -30,3 +30,7 @@ class CarreraTaxiController
     );
   }
 }
+
+/**
+ * Nota: mas adelante creare mas controladores para las carreras de taxi.
+ */
