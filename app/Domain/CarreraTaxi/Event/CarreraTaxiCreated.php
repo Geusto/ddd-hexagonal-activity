@@ -6,6 +6,12 @@ use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
 use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiCliente;
 use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiTaxi;
 use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiTaxista;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiKilometros;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiPrecio;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiDuracionMinutos;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiBarrioInicio;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiBarrioLlegada;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiCantidadPasajeros;
 use DateTime;
 
 /**
