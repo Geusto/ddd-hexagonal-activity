@@ -43,8 +43,8 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function create(CarreraTaxi $carreraTaxi): void
     {
-      $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
-      $model->save();
+        $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
+        $model->save();
     }
 
     /**
@@ -53,9 +53,9 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function update(CarreraTaxi $carreraTaxi): void
     {
-      $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
-      $model->update();
-  }
+        $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
+        $model->update();
+    }
 
     /**
      * Elimina una carrera de la base de datos
@@ -63,11 +63,11 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function delete(CarreraTaxi $carreraTaxi): void
     {
-      $model = CarreraTaxiModel::where('id', $carreraTaxi->getId()->getValue())->first();
-      if ($model) {
-        $model->delete();
-      }
-  }
+        $model = CarreraTaxiModel::where('id', $carreraTaxi->getId()->getValue())->first();
+        if ($model) {
+            $model->delete();
+        }
+    }
 
     /**
      * Busca una carrera por su ID
@@ -76,12 +76,28 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function findById(CarreraTaxiId $id): ?CarreraTaxi
     {
-      $model = CarreraTaxiModel::find($id->getValue());
+        $model = CarreraTaxiModel::find($id->getValue());
         
-      if (!$model) {
-        return null;
-      }
+        if (!$model) {
+            return null;
+        }
 
-      return $model->toDomainEntity();
+        return $model->toDomainEntity();
+    }
+
+    /**
+     * Obtiene todas las carreras
+     * @param ListCarreraTaxiQuery|null $query
+     * @return array
+     */
+    public function findAll(?ListCarreraTaxiQuery $query = null): array
+    {
+        $queryBuilder = CarreraTaxiModel::query();
+
+        $models = $queryBuilder->get();
+        
+        return $models->map(function (CarreraTaxiModel $model) {
+            return $model->toDomainEntity();
+        })->toArray();
     }
 }
