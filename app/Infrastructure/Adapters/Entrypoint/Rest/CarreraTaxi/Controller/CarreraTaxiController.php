@@ -29,8 +29,19 @@ class CarreraTaxiController
       CarreraTaxiHttpMapper::toJson($response)
     );
   }
+
+  public function index()
+  {
+    $items = $this->repository->findAll(); 
+    $data = array_map(fn ($c) => CarreraTaxiHttpMapper::toJson($this->appMapper->toResponse($c)), $items);
+  
+    return response()->json([
+      'ok' => true,
+      'data' => $data,
+    ]);
+  }
 }
 
 /**
- * Nota: mas adelante creare mas controladores para las carreras de taxi.
- */
+* Nota: mas adelante creare mas controladores para las carreras de taxi.
+*/
