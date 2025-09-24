@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Controller;
 
 use App\Application\CarreraTaxi\Port\In\CreateCarreraTaxiUseCase;
+use App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Request\CarreraTaxiHttpRequest;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Response\CarreraTaxiHttpResponse;
@@ -51,10 +52,27 @@ class CarreraTaxiController
 
     $dto = $this->appMapper->toResponse($carrera);
     return response()->json([
-        'ok' => true,
-        'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($dto),
+      'ok' => true,
+      'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($dto),
     ]);
   }
+
+  public function destroy(int $id)
+  {
+    $carrera = $this->repository->findById(new CarreraTaxiId($id));
+    if (!$carrera) {
+      return response()->json(['ok' => false, 'message' => 'No encontrada'], 404);
+    }
+
+    $this->repository->delete($carrera);
+
+    return response()->json([
+      'ok' => true,
+      'message' => 'Eliminada'
+    ]);
+  }
+
+
 }
 
 /**
