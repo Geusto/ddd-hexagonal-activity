@@ -6,6 +6,7 @@ use App\Application\CarreraTaxi\Port\In\CreateCarreraTaxiUseCase;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Request\CarreraTaxiHttpRequest;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper;
 use App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Response\CarreraTaxiHttpResponse;
+use Illuminate\Http\JsonResponse;
 
 
 /**
@@ -38,6 +39,20 @@ class CarreraTaxiController
     return response()->json([
       'ok' => true,
       'data' => $data,
+    ]);
+  }
+
+  public function show(int $id): JsonResponse
+  {
+    $carrera = $this->repository->findById(new \App\Domain\CarreraTaxi\ValueObject\CarreraTaxiId($id));
+    if (!$carrera) {
+      return response()->json(['ok' => false, 'message' => 'No encontrada'], 404);
+    }
+
+    $dto = $this->appMapper->toResponse($carrera);
+    return response()->json([
+        'ok' => true,
+        'data' => \App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Mapper\CarreraTaxiHttpMapper::toJson($dto),
     ]);
   }
 }
