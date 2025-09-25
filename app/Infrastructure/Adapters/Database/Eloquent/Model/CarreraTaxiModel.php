@@ -83,7 +83,6 @@ class CarreraTaxiModel extends Model
     public static function fromDomainEntity(CarreraTaxi $carreraTaxi): self
     {
       $model = new self();
-      $model->id = $carreraTaxi->getId()->getValue();
       $model->cliente = $carreraTaxi->getCliente()->getValue();
       $model->taxi = $carreraTaxi->getTaxi()->getValue();
       $model->taxista = $carreraTaxi->getTaxista()->getValue();

@@ -27,14 +27,13 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function nextId(): CarreraTaxiId
     {
-        // Obtener el próximo valor de AUTOINCREMENT desde la base de datos
-        // Nota: SHOW TABLE STATUS funciona en MySQL/MariaDB
-        $status = DB::select("SHOW TABLE STATUS LIKE 'carrera_taxi'");
-        $next = isset($status[0]) && isset($status[0]->Auto_increment)
-            ? (int) $status[0]->Auto_increment
-            : ((int) CarreraTaxiModel::max('id') + 1);
+        // Calcular de forma confiable el próximo ID como MAX(id) + 1 para evitar
+        // inconsistencias con el AUTO_INCREMENT cuando se han hecho inserts manuales
+        // con IDs explícitos.
+        $maxId = (int) CarreraTaxiModel::max('id');
+        $next = $maxId + 1;
 
-        return new CarreraTaxiId($next);
+        return new CarreraTaxiId($next > 0 ? $next : 1);
     }
 
     /**
@@ -45,6 +44,10 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
     {
         $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
         $model->save();
+        // Propagar el ID generado por la BD a la entidad de dominio
+        if ($model->id) {
+            $carreraTaxi->setId(new CarreraTaxiId((int) $model->id));
+        }
     }
 
     /**

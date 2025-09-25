@@ -102,6 +102,14 @@ class CarreraTaxi
     return $this->id;
   }
 
+  /**
+   * Establece el identificador una vez que la persistencia lo genera
+   */
+  public function setId(CarreraTaxiId $id): void
+  {
+    $this->id = $id;
+  }
+
   public function getCliente(): CarreraTaxiCliente
   {
     return $this->cliente;
