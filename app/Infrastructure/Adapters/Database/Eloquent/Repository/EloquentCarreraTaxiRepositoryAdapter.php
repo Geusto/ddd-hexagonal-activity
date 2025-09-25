@@ -53,8 +53,23 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function update(CarreraTaxi $carreraTaxi): void
     {
-        $model = CarreraTaxiModel::fromDomainEntity($carreraTaxi);
-        $model->update();
+        $model = CarreraTaxiModel::find($carreraTaxi->getId()->getValue());
+        if (!$model) {
+            return; // o lanzar excepción de dominio si prefieres
+        }
+
+        // Asignar campos (camelCase según migración/modelo)
+        $model->cliente = $carreraTaxi->getCliente()->getValue();
+        $model->taxi = $carreraTaxi->getTaxi()->getValue();
+        $model->taxista = $carreraTaxi->getTaxista()->getValue();
+        $model->kilometros = $carreraTaxi->getKilometros()->getValue();
+        $model->barrioInicio = $carreraTaxi->getBarrioInicio()->getValue();
+        $model->barrioLlegada = $carreraTaxi->getBarrioLlegada()->getValue();
+        $model->cantidadPasajeros = $carreraTaxi->getCantidadPasajeros()->getValue();
+        $model->precio = $carreraTaxi->getPrecio()->getValue();
+        $model->duracionMinutos = $carreraTaxi->getDuracionMinutos()->getValue();
+
+        $model->save();
     }
 
     /**
