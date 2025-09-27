@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Censo extends Model
 {
+    use HasFactory;
+
     protected $table = 'censos';
 
+    // Agregar todos los campos que vas a insertar
     protected $fillable = [
         'nombre',
         'fecha',
@@ -15,19 +19,19 @@ class Censo extends Model
         'departamento',
         'ciudad',
         'casa',
-        'num_hombres',
-        'num_mujeres',
-        'num_ancianos_hombres',
-        'num_ancianas_mujeres',
-        'num_ninos',
-        'num_ninas',
-        'num_habitaciones',
-        'num_camas',
-        'tiene_agua',
-        'tiene_luz',
-        'tiene_alcantarillado',
-        'tiene_gas',
-        'tiene_otros_servicios',
-        'nombre_sensador',
+        'numHombres',
+        'numMujeres',
+        'numAncianosHombres',
+        'numAncianasMujeres',
+        'numNinos',
+        'numNinas',
+        'numHabitaciones',
+        'numCamas',
+        'tieneAgua',
+        'tieneLuz',
+        'tieneAlcantarillado',
+        'tieneGas',
+        'tieneOtrosServicios',
+        'nombreSensador',
     ];
 }
