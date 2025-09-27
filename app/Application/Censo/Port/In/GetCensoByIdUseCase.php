@@ -2,7 +2,9 @@
 
 namespace App\Application\Censo\Port\In;
 
+use App\Domain\Censo\Censo;
+
 interface GetCensoByIdUseCase
 {
-    public function execute(int $id): ?array;
+    public function getById(int $id): ?Censo;
 }

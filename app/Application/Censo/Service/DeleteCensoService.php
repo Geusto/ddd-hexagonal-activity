@@ -9,7 +9,7 @@ class DeleteCensoService implements DeleteCensoUseCase
 {
     public function __construct(private CensoRepositoryInterface $repository) {}
 
-    public function execute(int $id): void
+    public function delete(int $id): void
     {
         $this->repository->delete($id);
     }

@@ -2,7 +2,10 @@
 
 namespace App\Application\Censo\Port\In;
 
+use App\Application\Censo\Dto\Command\CreateCensoCommand;
+use App\Domain\Censo\Censo;
+
 interface CreateCensoUseCase
 {
-    public function execute(array $data): array;
+    public function create(CreateCensoCommand $command): Censo;
 }
