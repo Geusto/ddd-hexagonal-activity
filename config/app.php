@@ -195,6 +195,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+		App\Infrastructure\Entrypoint\Rest\Censo\Providers\CensoServiceProvider::class,
+
 
     ],
 

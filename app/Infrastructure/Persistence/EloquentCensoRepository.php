@@ -2,22 +2,21 @@
 
 namespace App\Infrastructure\Persistence;
 
-use App\Domain\Censo\Censo;
 use App\Domain\Censo\Repository\CensoRepositoryInterface;
 use App\Models\Censo as CensoModel;
 
 class EloquentCensoRepository implements CensoRepositoryInterface
 {
-    public function save(Censo $censo): Censo
+    public function save(array $data): array
     {
-        $model = CensoModel::create((array)$censo);
-        return new Censo(...$model->toArray());
+        $model = CensoModel::create($data);
+        return $model->toArray();
     }
 
-    public function findById(int $id): ?Censo
+    public function findById(int $id): ?array
     {
         $model = CensoModel::find($id);
-        return $model ? new Censo(...$model->toArray()) : null;
+        return $model ? $model->toArray() : null;
     }
 
     public function findAll(): array
@@ -25,12 +24,12 @@ class EloquentCensoRepository implements CensoRepositoryInterface
         return CensoModel::all()->toArray();
     }
 
-    public function update(int $id, array $data): ?Censo
+    public function update(int $id, array $data): ?array
     {
         $model = CensoModel::find($id);
         if (!$model) return null;
         $model->update($data);
-        return new Censo(...$model->toArray());
+        return $model->toArray();
     }
 
     public function delete(int $id): void

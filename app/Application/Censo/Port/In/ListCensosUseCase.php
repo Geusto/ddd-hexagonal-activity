@@ -2,7 +2,7 @@
 
 namespace App\Application\Censo\Port\In;
 
-interface ListCensosUseCase
+interface ListCensoUseCase
 {
-    public function list(): array;
+    public function execute(): array;
 }

@@ -9,9 +9,8 @@ class GetCensoByIdService implements GetCensoByIdUseCase
 {
     public function __construct(private CensoRepositoryInterface $repository) {}
 
-    public function getById(int $id): array
+    public function execute(int $id): ?array
     {
-        $censo = $this->repository->find($id);
-        return $censo ? (array) $censo : [];
+        return $this->repository->findById($id);
     }
 }
