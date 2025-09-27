@@ -26,3 +26,13 @@ Route::prefix('carreras')->group(function () {
     Route::put('/{id}', [CarreraTaxiController::class, 'update'])->name('carreras.update');
     Route::delete('/{id}', [CarreraTaxiController::class, 'destroy'])->name('carreras.destroy');
 });
+
+use App\Infrastructure\Entrypoint\Rest\Censo\Controller\CensoController;
+
+Route::prefix('censos')->group(function () {
+    Route::post('/', [CensoController::class, 'store']);
+    Route::get('/', [CensoController::class, 'index'])->name('censos.index');
+    Route::get('/{id}', [CensoController::class, 'show'])->name('censos.show');
+    Route::put('/{id}', [CensoController::class, 'update'])->name('censos.update');
+    Route::delete('/{id}', [CensoController::class, 'destroy'])->name('censos.destroy');
+});
