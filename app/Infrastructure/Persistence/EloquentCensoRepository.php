@@ -11,26 +11,26 @@ class EloquentCensoRepository implements CensoRepositoryInterface
     public function save(Censo $censo): Censo
     {
         $model = CensoModel::create([
-            'nombre' => $censo->getNombre(),
-            'fecha' => $censo->getFecha(),
-            'pais' => $censo->getPais(),
-            'departamento' => $censo->getDepartamento(),
-            'ciudad' => $censo->getCiudad(),
-            'casa' => $censo->getCasa(),
-            'numHombres' => $censo->getNumHombres(),
-            'numMujeres' => $censo->getNumMujeres(),
-            'numAncianosHombres' => $censo->getNumAncianosHombres(),
-            'numAncianasMujeres' => $censo->getNumAncianasMujeres(),
-            'numNinos' => $censo->getNumNinos(),
-            'numNinas' => $censo->getNumNinas(),
-            'numHabitaciones' => $censo->getNumHabitaciones(),
-            'numCamas' => $censo->getNumCamas(),
-            'tieneAgua' => $censo->getTieneAgua(),
-            'tieneLuz' => $censo->getTieneLuz(),
-            'tieneAlcantarillado' => $censo->getTieneAlcantarillado(),
-            'tieneGas' => $censo->getTieneGas(),
-            'tieneOtrosServicios' => $censo->getTieneOtrosServicios(),
-            'nombreSensador' => $censo->getNombreSensador(),
+            'nombre' => $censo->nombre,
+            'fecha' => $censo->fecha,
+            'pais' => $censo->pais,
+            'departamento' => $censo->departamento,
+            'ciudad' => $censo->ciudad,
+            'casa' => $censo->casa,
+            'numHombres' => $censo->numHombres,
+            'numMujeres' => $censo->numMujeres,
+            'numAncianosHombres' => $censo->numAncianosHombres,
+            'numAncianasMujeres' => $censo->numAncianasMujeres,
+            'numNinos' => $censo->numNinos,
+            'numNinas' => $censo->numNinas,
+            'numHabitaciones' => $censo->numHabitaciones,
+            'numCamas' => $censo->numCamas,
+            'tieneAgua' => $censo->tieneAgua,
+            'tieneLuz' => $censo->tieneLuz,
+            'tieneAlcantarillado' => $censo->tieneAlcantarillado,
+            'tieneGas' => $censo->tieneGas,
+            'tieneOtrosServicios' => $censo->tieneOtrosServicios,
+            'nombreSensador' => $censo->nombreSensador,
         ]);
 
         return new Censo(...$model->toArray());
@@ -44,7 +44,7 @@ class EloquentCensoRepository implements CensoRepositoryInterface
 
     public function findAll(): array
     {
-        return CensoModel::all()->toArray();
+        return CensoModel::all()->map(fn($model) => new Censo(...$model->toArray()))->toArray();
     }
 
     public function update(int $id, array $data): ?Censo
