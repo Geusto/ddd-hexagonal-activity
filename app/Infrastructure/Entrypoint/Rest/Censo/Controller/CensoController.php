@@ -22,7 +22,7 @@ class CensoController extends Controller
 
     public function index()
     {
-        return response()->json($this->listCensosUseCase->execute());
+        return response()->json($this->listCensosUseCase->list());
     }
 
     public function store(Request $request)

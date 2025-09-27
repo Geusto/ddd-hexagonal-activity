@@ -1,62 +1,43 @@
-<?php
+// app/Infrastructure/Persistence/Eloquent/EloquentCensoRepository.php
 
-namespace App\Infrastructure\Persistence;
+namespace App\Infrastructure\Persistence\Eloquent;
 
 use App\Domain\Censo\Censo;
-use App\Domain\Censo\Repository\CensoRepositoryInterface;
-use App\Models\Censo as CensoModel;
+use App\Domain\Censo\Port\Out\CensoRepository;
+use App\Models\Censo as EloquentCenso;
 
-class EloquentCensoRepository implements CensoRepositoryInterface
+class EloquentCensoRepository implements CensoRepository
 {
     public function save(Censo $censo): Censo
     {
-        $model = CensoModel::create([
-            'nombre' => $censo->nombre,
-            'fecha' => $censo->fecha,
-            'pais' => $censo->pais,
-            'departamento' => $censo->departamento,
-            'ciudad' => $censo->ciudad,
-            'casa' => $censo->casa,
-            'numHombres' => $censo->numHombres,
-            'numMujeres' => $censo->numMujeres,
-            'numAncianosHombres' => $censo->numAncianosHombres,
-            'numAncianasMujeres' => $censo->numAncianasMujeres,
-            'numNinos' => $censo->numNinos,
-            'numNinas' => $censo->numNinas,
-            'numHabitaciones' => $censo->numHabitaciones,
-            'numCamas' => $censo->numCamas,
-            'tieneAgua' => $censo->tieneAgua,
-            'tieneLuz' => $censo->tieneLuz,
-            'tieneAlcantarillado' => $censo->tieneAlcantarillado,
-            'tieneGas' => $censo->tieneGas,
-            'tieneOtrosServicios' => $censo->tieneOtrosServicios,
-            'nombreSensador' => $censo->nombreSensador,
-        ]);
+        $eloquent = new EloquentCenso();
 
-        return new Censo(...$model->toArray());
-    }
+        $eloquent->nombre              = $censo->nombre;
+        $eloquent->fecha               = $censo->fecha;
+        $eloquent->pais                = $censo->pais;
+        $eloquent->departamento        = $censo->departamento;
+        $eloquent->ciudad              = $censo->ciudad;
+        $eloquent->casa                = $censo->casa;
+        $eloquent->num_hombres         = $censo->numHombres;
+        $eloquent->num_mujeres         = $censo->numMujeres;
+        $eloquent->num_ancianos_hombres = $censo->numAncianosHombres;
+        $eloquent->num_ancianas_mujeres = $censo->numAncianasMujeres;
+        $eloquent->num_ninos           = $censo->numNinos;
+        $eloquent->num_ninas           = $censo->numNinas;
+        $eloquent->num_habitaciones    = $censo->numHabitaciones;
+        $eloquent->num_camas           = $censo->numCamas;
+        $eloquent->tiene_agua          = $censo->tieneAgua;
+        $eloquent->tiene_luz           = $censo->tieneLuz;
+        $eloquent->tiene_alcantarillado = $censo->tieneAlcantarillado;
+        $eloquent->tiene_gas           = $censo->tieneGas;
+        $eloquent->tiene_otros_servicios = $censo->tieneOtrosServicios;
+        $eloquent->nombre_sensador     = $censo->nombreSensador;
 
-    public function findById(int $id): ?Censo
-    {
-        $model = CensoModel::find($id);
-        return $model ? new Censo(...$model->toArray()) : null;
-    }
+        $eloquent->save();
 
-    public function findAll(): array
-    {
-        return CensoModel::all()->map(fn($model) => new Censo(...$model->toArray()))->toArray();
-    }
+        // actualizar ID en el dominio
+        $censo->id = $eloquent->id;
 
-    public function update(int $id, array $data): ?Censo
-    {
-        $model = CensoModel::find($id);
-        if (!$model) return null;
-        $model->update($data);
-        return new Censo(...$model->toArray());
-    }
-
-    public function delete(int $id): void
-    {
-        CensoModel::destroy($id);
+        return $censo;
     }
 }
