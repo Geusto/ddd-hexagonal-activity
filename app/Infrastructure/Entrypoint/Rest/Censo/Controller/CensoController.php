@@ -2,49 +2,34 @@
 
 namespace App\Infrastructure\Entrypoint\Rest\Censo\Controller;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Application\Censo\Dto\Command\CreateCensoCommand;
 use App\Application\Censo\Port\In\CreateCensoUseCase;
-use App\Application\Censo\Port\In\ListCensosUseCase;
-use App\Application\Censo\Port\In\GetCensoByIdUseCase;
-use App\Application\Censo\Port\In\UpdateCensoUseCase;
-use App\Application\Censo\Port\In\DeleteCensoUseCase;
+use Illuminate\Http\Request;
 
-class CensoController extends Controller
+class CensoController
 {
     public function __construct(
-        private CreateCensoUseCase $createCensoUseCase,
-        private ListCensosUseCase $listCensosUseCase,
-        private GetCensoByIdUseCase $getCensoByIdUseCase,
-        private UpdateCensoUseCase $updateCensoUseCase,
-        private DeleteCensoUseCase $deleteCensoUseCase
+        private CreateCensoUseCase $createCensoUseCase
     ) {}
 
-    public function index()
+    public function create(Request $request)
     {
-        return response()->json($this->listCensosUseCase->list());
-    }
+        $command = new CreateCensoCommand(
+            $request->input('nombre'),
+            $request->input('fecha'),
+            $request->input('pais'),
+            $request->input('departamento'),
+            $request->input('ciudad'),
+            $request->input('casa'),
+            (int) $request->input('numHombres'),
+            (int) $request->input('numMujeres'),
+            (bool) $request->input('tieneAgua'),
+            (bool) $request->input('tieneLuz'),
+            $request->input('nombreSensador'),
+        );
 
-    public function store(Request $request)
-    {
-        $this->createCensoUseCase->execute($request->all());
-        return response()->json(['message' => 'Censo creado con éxito']);
-    }
+        $censo = $this->createCensoUseCase->create($command);
 
-    public function show($id)
-    {
-        return response()->json($this->getCensoByIdUseCase->execute($id));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->updateCensoUseCase->execute($id, $request->all());
-        return response()->json(['message' => "Censo con ID $id actualizado"]);
-    }
-
-    public function destroy($id)
-    {
-        $this->deleteCensoUseCase->execute($id);
-        return response()->json(['message' => "Censo con ID $id eliminado"]);
+        return response()->json($censo);
     }
 }

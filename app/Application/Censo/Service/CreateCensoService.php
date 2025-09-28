@@ -9,7 +9,9 @@ use App\Domain\Censo\Repository\CensoRepositoryInterface;
 
 class CreateCensoService implements CreateCensoUseCase
 {
-    public function __construct(private CensoRepositoryInterface $repository) {}
+    public function __construct(
+        private CensoRepositoryInterface $censoRepository
+    ) {}
 
     public function create(CreateCensoCommand $command): Censo
     {
@@ -22,20 +24,11 @@ class CreateCensoService implements CreateCensoUseCase
             $command->casa,
             $command->numHombres,
             $command->numMujeres,
-            $command->numAncianosHombres,
-            $command->numAncianasMujeres,
-            $command->numNinos,
-            $command->numNinas,
-            $command->numHabitaciones,
-            $command->numCamas,
             $command->tieneAgua,
             $command->tieneLuz,
-            $command->tieneAlcantarillado,
-            $command->tieneGas,
-            $command->tieneOtrosServicios,
             $command->nombreSensador
         );
 
-        return $this->repository->save($censo);
+        return $this->censoRepository->save($censo);
     }
 }
