@@ -123,11 +123,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * Custom Service Providers...
-         */
-        App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Providers\CarreraTaxiServiceProvider::class,
-        App\Providers\CensoServiceProvider::class,
+/*
+ * Custom Service Providers...
+ */
+
+App\Infrastructure\Entrypoint\Rest\Censo\Providers\CensoServiceProvider::class,
+
     ],
 
     /*

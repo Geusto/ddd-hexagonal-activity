@@ -4,7 +4,8 @@ namespace App\Infrastructure\Entrypoint\Rest\Censo\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Domain\Censo\Repository\CensoRepositoryInterface;
-use App\Infrastructure\Persistence\EloquentCensoRepository;
+use App\Infrastructure\Persistence\Eloquent\EloquentCensoRepository;
+
 
 // Casos de uso (ports + services)
 use App\Application\Censo\Port\In\CreateCensoUseCase;
