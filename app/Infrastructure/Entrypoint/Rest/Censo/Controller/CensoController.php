@@ -175,3 +175,6 @@ class CensoController
         return response()->json(['message' => 'Censo eliminado correctamente'], 200);
     }
 }
+
+
+// Caso de uso: Crear Censo
