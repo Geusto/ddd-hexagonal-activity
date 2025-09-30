@@ -127,7 +127,8 @@ return [
  * Custom Service Providers...
  */
 
-App\Infrastructure\Entrypoint\Rest\Censo\Providers\CensoServiceProvider::class,
+    App\Infrastructure\Entrypoint\Rest\Censo\Providers\CensoServiceProvider::class,
+    App\Infrastructure\Entrypoint\Rest\CarreraTaxi\Providers\CarreraTaxiServiceProvider::class,
 
     ],
 

@@ -27,13 +27,11 @@ class EloquentCarreraTaxiRepositoryAdapter implements CarreraTaxiRepositoryPort
      */
     public function nextId(): CarreraTaxiId
     {
-        // Calcular de forma confiable el próximo ID como MAX(id) + 1 para evitar
-        // inconsistencias con el AUTO_INCREMENT cuando se han hecho inserts manuales
-        // con IDs explícitos.
-        $maxId = (int) CarreraTaxiModel::max('id');
-        $next = $maxId + 1;
-
-        return new CarreraTaxiId($next > 0 ? $next : 1);
+        // Obtener el próximo ID usando AUTO_INCREMENT de la tabla
+        $result = DB::select("SHOW TABLE STATUS LIKE 'carrera_taxi'");
+        $nextId = $result[0]->Auto_increment ?? 1;
+        
+        return new CarreraTaxiId((int) $nextId);
     }
 
     /**
