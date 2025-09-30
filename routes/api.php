@@ -36,3 +36,12 @@ Route::prefix('censos')->group(function () {
     Route::put('/{id}', [CensoController::class, 'update'])->name('censos.update');
     Route::delete('/{id}', [CensoController::class, 'destroy'])->name('censos.destroy');
 });
+use App\Infrastructure\Entrypoint\Rest\Usuario\Controller\UsuarioController;
+
+Route::prefix('usuarios')->group(function () {
+    Route::post('/', [UsuarioController::class, 'store']);
+    Route::get('/', [UsuarioController::class, 'index']);
+    Route::get('/{id}', [UsuarioController::class, 'show']);
+    Route::put('/{id}', [UsuarioController::class, 'update']);
+    Route::delete('/{id}', [UsuarioController::class, 'destroy']);
+});
