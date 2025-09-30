@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Infrastructure;
+namespace Tests\Infrastructure;
 
 use Tests\TestCase;
 use App\Infrastructure\Adapters\Database\Eloquent\Repository\EloquentCarreraTaxiRepositoryAdapter;
